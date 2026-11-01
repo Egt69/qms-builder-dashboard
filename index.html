@@ -6,11 +6,20 @@
     <title>QMS Builder Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-base: #090A0F; --bg-card: rgba(20, 22, 35, 0.6); --card-border: rgba(139, 92, 246, 0.15); --primary: #8B5CF6; --primary-glow: rgba(139, 92, 246, 0.3); --success: #10B981; --accent: #d946ef; --text-main: #F8FAFC; --text-muted: #94A3B8; }
+        :root {
+            --bg-base: #090A0F; --bg-card: rgba(20, 22, 35, 0.6); --card-border: rgba(139, 92, 246, 0.15);
+            --primary: #8B5CF6; --primary-glow: rgba(139, 92, 246, 0.3); --success: #10B981; --accent: #d946ef;
+            --text-main: #F8FAFC; --text-muted: #94A3B8;
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-base); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; position: relative; }
+        
+        /* Dot Grid Pattern */
         body::before { content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: radial-gradient(rgba(139, 92, 246, 0.15) 1px, transparent 1px); background-size: 24px 24px; z-index: -1; pointer-events: none; mask-image: radial-gradient(circle at center, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%); }
+        
         .app-container { width: 100%; max-width: 1100px; padding: 2rem; z-index: 1; }
+        
+        /* Header */
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1.5rem; }
         .header-title h1 { font-size: 2rem; font-weight: 700; background: linear-gradient(to right, #c4b5fd, #e879f9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.25rem; }
         .header-title p { color: var(--text-muted); font-size: 0.95rem; }
@@ -20,27 +29,37 @@
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
         .connect-btn { background: var(--primary); color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 15px var(--primary-glow); }
         .connect-btn:hover { background: #7c3aed; }
+        
+        /* Wallet Dropdown */
         .wallet-dropdown { position: absolute; top: calc(100% + 10px); right: 0; background: #1a1c2e; border: 1px solid var(--card-border); border-radius: 12px; padding: 0.5rem; min-width: 220px; display: none; flex-direction: column; gap: 0.25rem; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
         .wallet-dropdown.show { display: flex; }
         .wallet-option { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: transparent; border: none; color: var(--text-main); border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.9rem; text-align: left; transition: background 0.2s; }
         .wallet-option:hover { background: rgba(139, 92, 246, 0.15); }
         .wallet-option img { width: 24px; height: 24px; border-radius: 50%; }
+        
+        /* Navigation */
         .nav-segmented { display: inline-flex; background: rgba(10, 11, 18, 0.7); padding: 0.35rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 2rem; overflow-x: auto; max-width: 100%; }
         .nav-btn { background: transparent; color: var(--text-muted); border: none; padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 500; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
         .nav-btn:hover { color: var(--text-main); }
         .nav-btn.active { background: rgba(139, 92, 246, 0.15); color: #d8b4fe; }
+        
+        /* Tab Content */
         .tab-content { display: none; animation: fadeIn 0.3s ease; }
         .tab-content.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
         .grid-container { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
         @media (min-width: 768px) { .grid-2-col { grid-template-columns: 1fr 2fr; } }
+        
         .card { background: var(--bg-card); backdrop-filter: blur(16px); border: 1px solid var(--card-border); border-radius: 16px; padding: 1.5rem; }
         .card-header { display: flex; align-items: center; gap: 0.75rem; color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 1rem; }
         .card-value { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #fff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .item-title { font-weight: 600; }
         .item-desc { font-size: 0.85rem; color: var(--text-muted); }
         .item-right { font-family: monospace; color: var(--text-muted); font-size: 0.9rem; }
+        
         .input-group { margin-bottom: 1rem; }
         .input-label { display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
         .input-field { width: 100%; padding: 0.8rem 1rem; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; }
@@ -50,10 +69,12 @@
         .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
         .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--card-border); padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 500; cursor: pointer; width: 100%; transition: all 0.2s; }
         .btn-secondary:hover { background: rgba(139, 92, 246, 0.1); }
+        
         .status-msg { padding: 0.75rem; border-radius: 8px; font-size: 0.9rem; margin-top: 1rem; }
         .status-msg.success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .status-msg.error { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
         .status-msg.warning { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        
         .copy-input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); color: #fff; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.85rem; }
         .btn-copy { background: var(--primary); color: white; border: none; padding: 0 1rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
     </style>
@@ -79,6 +100,7 @@
             <button class="nav-btn" onclick="openTab('factory', this)">🏭 Token Factory</button>
         </div>
 
+        <!-- TAB 1: NETWORK HEALTH -->
         <div id="tab-health" class="tab-content active">
             <div class="grid-container grid-2-col">
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -89,6 +111,7 @@
             </div>
         </div>
 
+        <!-- TAB 2: SEARCH -->
         <div id="tab-search" class="tab-content">
             <div class="card">
                 <div class="card-header">Search Wallet, Transaction, or Token (CA)</div>
@@ -100,6 +123,7 @@
             </div>
         </div>
 
+        <!-- TAB 3: DEV TOOLS -->
         <div id="tab-devtools" class="tab-content">
             <div class="grid-container grid-2-col">
                 <div class="card">
@@ -115,6 +139,7 @@
             </div>
         </div>
 
+        <!-- TAB 4: FACTORY -->
         <div id="tab-factory" class="tab-content">
             <div class="card" style="max-width: 600px; margin: 0 auto;">
                 <div class="card-header">Deploy ERC-20 Token</div>
@@ -127,7 +152,6 @@
         </div>
     </div>
     
-    <!-- Memanggil file JavaScript eksternal -->
     <script type="module" src="./app.js"></script>
 </body>
 </html>
