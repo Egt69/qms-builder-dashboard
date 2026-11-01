@@ -62,12 +62,27 @@ async function connectWallet(providerDetail) {
 store.subscribe(renderWalletOptions);
 renderWalletOptions();
 
+// --- TOMBOL CONNECT / DISCONNECT ---
 connectBtn.addEventListener('click', async () => {
-    if (connectedAccount) return;
+    // JIKA SUDAH TERHUBUNG, MAKA KLIK = DISCONNECT
+    if (connectedAccount) {
+        if (confirm("Disconnect wallet from QMS Dashboard?")) {
+            connectedAccount = null;
+            activeProvider = null;
+            connectBtn.innerText = "Connect Wallet";
+            connectBtn.style.background = "var(--primary)";
+            // Bersihkan status di tab Dev Tools jika ada
+            document.getElementById('wallet-status').innerHTML = '';
+            document.getElementById('deploy-status').innerHTML = '';
+        }
+        return;
+    }
+
+    // JIKA BELUM TERHUBUNG, MAKA KLIK = CONNECT
     const providers = store.getProviders();
     if (providers.length === 1) await connectWallet(providers[0]);
     else if (providers.length > 1) walletDropdown.classList.toggle('show');
-    else alert("No wallet found.");
+    else alert("No compatible wallet found. Please install MetaMask or Rabby.");
 });
 
 document.addEventListener('click', (e) => { if (!connectBtn.contains(e.target) && !walletDropdown.contains(e.target)) walletDropdown.classList.remove('show'); });
