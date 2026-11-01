@@ -22,7 +22,7 @@ A comprehensive, lightweight toolset for the **QMS Post-Quantum Network Testnet*
 ## 🚀 Live Demo
 
 You can try the live dashboard here:
-👉 **https://qmsbuilder-dashboard.vercel.app/**
+https://qms-builder-dashboard-bw5i.vercel.app/
 
 ## 💻 How to Run Locally
 
